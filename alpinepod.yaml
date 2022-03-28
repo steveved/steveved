@@ -1,0 +1,21 @@
+apiVersion:  v1
+kind:  Pod
+metadata:
+        name:  cdn-nginx
+        labels:
+                app:  cdn
+spec:
+        containers:
+                - name:  cdn
+                  image:  alpine/git:latest
+                  # command:  ["sleep", "3600"]
+                  command:  ["git", "clone", "-b", "K8S"]
+                  args:  ["$(GITURL)"]
+                  env:
+                          - name:  GITURL
+                            valueFrom:
+                                    configMapKeyRef:
+                                            name:  git-configmap
+                                            key:  gitUrl
+
+restartPolicy:  Never
